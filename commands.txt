@@ -1,0 +1,224 @@
+docker ps
+docker exec -it redis bash
+
+redis-cli
+
+set a b
+get a
+
+set a 1
+get a
+
+set user:1:name sam
+set user:2:name jake
+
+set somekey "some value"
+
+keys *
+
+keys user*
+
+scan 0
+
+#if more than 10 keys
+scan #number
+
+scan 0 match user*
+
+scan 0 match user* count 3
+
+del a somekey
+
+#remove all keys
+flushdb
+
+#expire key in 10 seconds
+set a b ex 10
+
+#to get time to live for key
+ttl a
+
+#to increase expire time of key
+set a b ex 10
+expire a 60
+
+#to set expire time of key in timestamp 
+set a b exat #timestamp
+
+#to set expire time in 3000 miliseconds
+set b c px 3000
+
+#to update value of key without removing expire time
+set a b ex 60
+set a c keepttl
+
+#do something if present
+set a b xx 
+
+#do something if not present
+set a b nx
+
+#check if key exists
+exists b
+
+#increment value of key by 1
+incr a
+
+#decrement value of key by 1
+decr a
+
+#increment float value of key by number
+incrbyfloat a .3
+
+#decrement float value of key by number
+incrbyfloat a -.3
+
+#increment value of key by number
+incrby a 20
+
+#decrement value of key by number
+decrby a 20
+
+https://redis.io/commands
+
+hset user:1 field value field value field value
+hset user:1 name sam age 10 city atlanta
+
+hget user:1 field
+hget user:1 name
+
+hgetall user:1
+
+#expire whole hash object
+expire user:1 10
+
+hkeys user:1
+
+hvals user:1
+
+hexists user:1 name
+
+hdel user:1 age
+
+del user:1
+
+#list in redis
+#add items at last position
+rpush users sam mike jake
+
+#add items at first position
+lpush users sam mike jake
+
+type users
+
+#length of list
+llen users
+
+#get all items from list
+lrange users 0 -1
+
+#get first 2 items from list
+lrange users 0 1
+
+#pop items from left
+lpop users
+
+#pop items from right
+rpop users
+
+lpop users 2
+
+#set in redis
+sadd users 1 2 3
+
+#length of set
+scard users
+
+#get value of set
+smembers users
+
+#check if value present in set
+sismember users 1
+
+#remove item from set
+srem users 1
+
+#pop item randomly from set
+spop users
+
+sadd skill:java 1 2 3 4
+sadd skill:js 2 3 4
+sadd skill:aws 4 5 6
+sadd candidate:criminal 4 5 6
+
+#intersection in set
+sinter skill:java skill:js skill:aws
+
+#union in set
+sunion skill:java skill:js
+
+#difference in set
+sdiff skill:java candidate:criminal
+
+#combine two sets and store result in new set
+sinterstore java-js skill:java skill:js
+
+#sorted set
+zadd products 0 books
+zadd products 0 iphone 0 tv
+
+zcard products
+
+#increase score
+zincrby products 1 books
+
+#show all members
+zrange products 0 -1
+
+#show all members with score
+zrange products 0 -1 withscores
+
+#product with highest score
+zrange products -1 -1
+zrange products 0 0 rev
+zrange products 0 0 rev withscores
+
+#2 product with highest score
+zrange prdoucts 0 1 rev withscores
+
+#get rank of products
+zrank products books
+
+zrevrank products iphone
+
+zscore products iphone
+
+#pop items from sorted set
+zpopmax products
+
+#transaction
+set user:1:balance 1
+set user:2:balance 0
+
+multi
+decr user:1:balance
+incr user:2:balance
+exec
+
+watch user:1:balance user:2:balance
+multi
+decr user:1:balance
+incr user:2:balance
+exec
+
+#rollback changes
+multi
+decr user:1:balance
+incr user:2:balance
+discard
+
+#saving on disk
+set user:1:balance 1
+set user:2:balance 0
+
+config set notify-keyspace-events AKE
