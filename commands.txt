@@ -222,3 +222,39 @@ set user:1:balance 1
 set user:2:balance 0
 
 config set notify-keyspace-events AKE
+
+acl list
+
+acl whoami
+
+acl setuser sam >secret
+
+acl deluser sam
+
+acl setuser sam >pass123 on
+
+acl setuser sam off
+
+auth sam pass123
+
+auth default nopass
+
+acl deluser sam
+
+acl setuser sam >pass123 on allcommands allkeys
+
+auth default nopass
+
+acl setuser sam -get
+
+acl list
+
+auth default nopass
+
+acl setuser sam -@dangerous
+
+config set requirepass pass1234
+
+auth default pass1234
+
+config set requirepass ""
